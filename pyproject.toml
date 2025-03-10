@@ -1,0 +1,41 @@
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+exclude = [
+    ".git",
+    ".ruff_cache",
+    "__pycache__",
+    "*/migrations/*",
+    ".venv",
+    "venv",
+]
+
+[tool.ruff.lint]
+# Enable pycodestyle, pyflakes etc
+select = ["E", "F", "B", "I", "W", "C90", "N", "D", "UP", "ANN", "S", "BLE", "FBT", "A", "COM", "C4", "DTZ", "T10", "EM", "ISC"]
+
+# Ignore missing docstrings in public module and package
+ignore = ["D100", "D104"]
+
+[tool.ruff.lint.per-file-ignores]
+# Ignore missing docstrings and assert statements in tests
+"**/tests/*" = ["D103", "S101"]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.ruff.lint.flake8-unused-arguments]
+ignore-variadic-names = true
+
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "wallets.settings"
+python_files = ["test_*.py"]
+addopts = "-vvv --tb=short"
+testpaths = ["tests", "wallets/tests"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+]
