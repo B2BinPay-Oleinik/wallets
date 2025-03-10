@@ -1,6 +1,5 @@
 import os
 from pathlib import Path
-from urllib.parse import urlparse
 
 from dotenv import load_dotenv
 
@@ -126,5 +125,5 @@ REST_FRAMEWORK = {
 }
 if DEBUG:
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
-        'rest_framework_json_api.renderers.BrowsableAPIRenderer'
+        'rest_framework_json_api.renderers.BrowsableAPIRenderer',
     )
