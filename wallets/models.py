@@ -51,3 +51,7 @@ class Transaction(Model):
     def __str__(self) -> str:
         """Return string representation of the transaction."""
         return f"Transaction {self.txid} ({self.amount})"
+
+    class Meta:
+        """Transaction model metadata."""
+        ordering = ['-id']
