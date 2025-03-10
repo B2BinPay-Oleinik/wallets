@@ -21,6 +21,7 @@ class Migration(migrations.Migration):
                 ('txid', models.UUIDField(db_index=True, default=uuid.uuid4, editable=False, unique=True)),
                 ('amount', models.DecimalField(decimal_places=8, max_digits=18)),
             ],
+            options={'ordering': ['-id']},
         ),
         migrations.CreateModel(
             name='Wallet',

@@ -21,6 +21,7 @@ WSGI_APPLICATION = 'wallets.wsgi.application'
 INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
+    'django_filters',
     'rest_framework',
     'wallets',
 ]
@@ -62,8 +63,8 @@ USE_X_FORWARDED_PORT = False
 # Internationalization
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
 THOUSAND_SEPARATOR = False
+TIME_ZONE = 'UTC'
 USE_I18N = False
 USE_L10N = False
 USE_THOUSAND_SEPARATOR = False
@@ -109,6 +110,10 @@ REST_FRAMEWORK = {
     'COMPACT_JSON': True,  # Trim whitespace
     'DATE_FORMAT': '%Y-%m-%d',
     'DATETIME_FORMAT': '%Y-%m-%dT%H:%M:%S%z',
+    'DEFAULT_FILTER_BACKENDS': (
+        'rest_framework_json_api.django_filters.DjangoFilterBackend',
+        'rest_framework_json_api.filters.OrderingFilter',
+    ),
     'DEFAULT_METADATA_CLASS': 'rest_framework_json_api.metadata.JSONAPIMetadata',
     'DEFAULT_PAGINATION_CLASS': 'rest_framework_json_api.pagination.JsonApiPageNumberPagination',
     'DEFAULT_PARSER_CLASSES': ('rest_framework_json_api.parsers.JSONParser',),

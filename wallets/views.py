@@ -18,8 +18,15 @@ from wallets.serializers import TransactionSerializer, WalletSerializer
 class WalletViewSet(ModelViewSet):
     """ViewSet for viewing and editing wallets."""
 
-    queryset = Wallet.objects.order_by('id')
+    queryset = Wallet.objects.all()
     serializer_class = WalletSerializer
+
+    filterset_fields = {
+        'label': ('exact', 'contains', 'iexact', 'icontains'),
+        'balance': ('exact', 'gte', 'lte'),
+    }
+    ordering_fields = ('id', 'balance', 'label')
+    ordering = ('id',)
 
 
 class TransactionViewSet(
@@ -34,8 +41,16 @@ class TransactionViewSet(
     """ViewSet for viewing and editing transactions."""
 
     http_method_names = ["get", "post", "head", "options"]
-    queryset = Transaction.objects.select_related('wallet').order_by('-id')
+    queryset = Transaction.objects.select_related('wallet')
     serializer_class = TransactionSerializer
+
+    filterset_fields = {
+        'amount': ('exact', 'gte', 'lte'),
+        'wallet': ('exact',),
+        'txid': ('exact',),
+    }
+    ordering_fields = ('id', 'amount')
+    ordering = ('-id',)
 
     def create(self, request: Request, *args: object, **kwargs: object) -> Response:
         """Create a new transaction."""
