@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:14
+    ports:
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    command: >
+      postgres
+      -c shared_buffers=256MB
+      -c effective_cache_size=1GB
+      -c work_mem=50MB
+      -c maintenance_work_mem=128MB
+      -c max_connections=100
+      -c max_prepared_transactions=0
+      -c default_statistics_target=100
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 7s
+      timeout: 7s
+      retries: 7
+
+  web:
+    build: .
+    command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_HOST=db
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:

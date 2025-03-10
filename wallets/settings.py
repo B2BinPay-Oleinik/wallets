@@ -71,15 +71,14 @@ USE_THOUSAND_SEPARATOR = False
 USE_TZ = True
 
 # Database
-db_url = urlparse(os.getenv('DATABASE_URL'))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': db_url.path[1:],
-        'USER': db_url.username,
-        'PASSWORD': db_url.password,
-        'HOST': db_url.hostname,
-        'PORT': db_url.port,
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': os.getenv('POSTGRES_PORT'),
         'CONN_MAX_AGE': 60,
         'OPTIONS': {
             'connect_timeout': 5,
