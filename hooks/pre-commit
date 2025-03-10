@@ -1,0 +1,9 @@
+#!/bin/sh
+
+echo "Running ruff check..."
+ruff check . --fix || exit 1
+
+echo "Running pytest..."
+pytest || exit 1
+
+exit 0

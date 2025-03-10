@@ -21,6 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django_filters',
+    'drf_spectacular',
     'rest_framework',
     'wallets',
 ]
@@ -116,6 +117,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework_json_api.pagination.JsonApiPageNumberPagination',
     'DEFAULT_PARSER_CLASSES': ('rest_framework_json_api.parsers.JSONParser',),
     'DEFAULT_RENDERER_CLASSES': ['rest_framework_json_api.renderers.JSONRenderer'],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     'EXCEPTION_HANDLER': 'rest_framework_json_api.exceptions.exception_handler',
     'HTML_SELECT_CUTOFF': 100,  # Limit browsable API
     'MAX_PAGINATE_BY': 100,
@@ -127,3 +129,22 @@ if DEBUG:
     REST_FRAMEWORK['DEFAULT_RENDERER_CLASSES'].append(
         'rest_framework_json_api.renderers.BrowsableAPIRenderer',
     )
+
+# Documentation
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Wallet Service API',
+    'DESCRIPTION': 'A JSON:API compliant service for managing wallets and transactions.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    'COMPONENT_SPLIT_REQUEST': True,
+    'SCHEMA_PATH_PREFIX': '/api/',
+    'TAGS': [
+        {'name': 'wallets', 'description': 'Wallet management endpoints'},
+        {'name': 'transactions', 'description': 'Transaction management endpoints'},
+    ],
+    'SWAGGER_UI_SETTINGS': {
+        'deepLinking': True,
+        'persistAuthorization': True,
+        'displayOperationId': True,
+    },
+}
