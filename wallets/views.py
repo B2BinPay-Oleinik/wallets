@@ -1,4 +1,5 @@
 from django.db import IntegrityError
+from drf_spectacular.utils import extend_schema, extend_schema_view
 from rest_framework.exceptions import ValidationError
 from rest_framework.mixins import CreateModelMixin, ListModelMixin, RetrieveModelMixin
 from rest_framework.request import Request
@@ -15,6 +16,38 @@ from wallets.models import Transaction, Wallet
 from wallets.serializers import TransactionSerializer, WalletSerializer
 
 
+@extend_schema_view(
+    list=extend_schema(
+        summary="List wallets",
+        description="Get a paginated list of all wallets with their balances.",
+        tags=["wallets"],
+    ),
+    create=extend_schema(
+        summary="Create wallet",
+        description="Create a new wallet with an initial balance of 0.",
+        tags=["wallets"],
+    ),
+    retrieve=extend_schema(
+        summary="Get wallet",
+        description="Get details of a specific wallet by its ID.",
+        tags=["wallets"],
+    ),
+    update=extend_schema(
+        summary="Update wallet",
+        description="Update a wallet's label.",
+        tags=["wallets"],
+    ),
+    partial_update=extend_schema(
+        summary="Partially update wallet",
+        description="Update specific fields of a wallet.",
+        tags=["wallets"],
+    ),
+    destroy=extend_schema(
+        summary="Delete wallet",
+        description="Delete a wallet and all its transactions.",
+        tags=["wallets"],
+    ),
+)
 class WalletViewSet(ModelViewSet):
     """ViewSet for viewing and editing wallets."""
 
@@ -29,6 +62,23 @@ class WalletViewSet(ModelViewSet):
     ordering = ('id',)
 
 
+@extend_schema_view(
+    list=extend_schema(
+        summary="List transactions",
+        description="Get a paginated list of all transactions.",
+        tags=["transactions"],
+    ),
+    create=extend_schema(
+        summary="Create transaction",
+        description="Create a new transaction. The wallet's balance will be updated automatically.",
+        tags=["transactions"],
+    ),
+    retrieve=extend_schema(
+        summary="Get transaction",
+        description="Get details of a specific transaction by its ID.",
+        tags=["transactions"],
+    ),
+)
 class TransactionViewSet(
     AutoPrefetchMixin,
     PreloadIncludesMixin,
